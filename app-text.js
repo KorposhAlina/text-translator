@@ -85,7 +85,7 @@ swapBtn.addEventListener("click", () => {
 // ----------------- Переклад -----------------
 
 async function translate(text, source, target) {
-  const res = await fetch("http://localhost:8080/translate-text", {
+  const res = await fetch("https://translator-app.onrender.com/translate-text"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
