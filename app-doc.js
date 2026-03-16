@@ -64,7 +64,7 @@ translateDocBtn.addEventListener("click", async () => {
   formData.append("toLang", docToLang.value);
 
   try {
-    const res = await fetch("https://translator-app.onrender.com/translate-text"), {
+    const res = await fetch("https://text-translator-5jtk.onrender.com/translate-file"), {
       method: "POST",
       body: formData
     });
