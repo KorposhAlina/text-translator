@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Translator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="app">
+
+    <header class="app-header">
+  <img src="logo1.png" alt="Logo" class="app-logo">
+  <h1>Automated Text Translator</h1>
+    </header>
+
+    <div class="tabs">
+  <a href="index.html" class="tab-button active">Text</a>
+  <a href="document.html" class="tab-button">Document</a>
+    </div>
+
+    <section class="translator-block">
+      <div class="lang-row">
+        <div class="lang-select">
+          <label>From</label>
+          <select id="from-lang">
+            <option value="auto">Determine language</option>
+            <option value="uk">Ukrainian</option>
+            <option value="en">English</option>
+            <option value="de">German</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="it">Italian</option>
+            <option value="pl">Polish</option>
+            <option value="cs">Czech</option>
+            <option value="sk">Slovak</option>
+            <option value="ro">Romanian</option>
+            <option value="bg">Bulgarian</option>
+            <option value="sr">Serbian</option>
+            <option value="hr">Croatian</option>
+            <option value="sl">Slovenian</option>
+            <option value="pt">Portuguese</option>
+            <option value="nl">Dutch</option>
+            <option value="sv">Swedish</option>
+            <option value="no">Norwegian</option>
+            <option value="da">Danish</option>
+            <option value="fi">Finnish</option>
+            <option value="et">Estonian</option>
+            <option value="lv">Latvian</option>
+            <option value="lt">Lithuanian</option>
+            <option value="hu">Hungarian</option>
+            <option value="tr">Turkish</option>
+            <option value="el">Greek</option>
+            <option value="he">Hebrew</option>
+            <option value="ar">Arabic</option>
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+            <option value="ur">Urdu</option>
+            <option value="fa">Persian</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="vi">Vietnamese</option>
+            <option value="th">Thai</option>
+            <option value="id">Indonesian</option>
+            <option value="ms">Malay</option>
+            <option value="sw">Swahili</option>
+            <option value="af">Afrikaans</option>
+            <option value="is">Icelandic</option>
+            <option value="ga">Irish</option>
+            <option value="mt">Maltese</option>
+            <option value="fil">Filipino</option>
+          </select>
+        </div>
+
+        <button id="swap-langs" class="swap-btn">⇄</button>
+
+        <div class="lang-select">
+          <label>To</label>
+          <select id="to-lang">
+            <option value="uk">Ukrainian</option>
+            <option value="en">English</option>
+            <option value="de">German</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="it">Italian</option>
+            <option value="pl">Polish</option>
+            <option value="cs">Czech</option>
+            <option value="sk">Slovak</option>
+            <option value="ro">Romanian</option>
+            <option value="bg">Bulgarian</option>
+            <option value="sr">Serbian</option>
+            <option value="hr">Croatian</option>
+            <option value="sl">Slovenian</option>
+            <option value="pt">Portuguese</option>
+            <option value="nl">Dutch</option>
+            <option value="sv">Swedish</option>
+            <option value="no">Norwegian</option>
+            <option value="da">Danish</option>
+            <option value="fi">Finnish</option>
+            <option value="et">Estonian</option>
+            <option value="lv">Latvian</option>
+            <option value="lt">Lithuanian</option>
+            <option value="hu">Hungarian</option>
+            <option value="tr">Turkish</option>
+            <option value="el">Greek</option>
+            <option value="he">Hebrew</option>
+            <option value="ar">Arabic</option>
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+            <option value="ur">Urdu</option>
+            <option value="fa">Persian</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="vi">Vietnamese</option>
+            <option value="th">Thai</option>
+            <option value="id">Indonesian</option>
+            <option value="ms">Malay</option>
+            <option value="sw">Swahili</option>
+            <option value="af">Afrikaans</option>
+            <option value="is">Icelandic</option>
+            <option value="ga">Irish</option>
+            <option value="mt">Maltese</option>
+            <option value="fil">Filipino</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="text-area-row">
+        <textarea id="source-text" placeholder="Enter text"></textarea>
+        <textarea id="result-text" placeholder="Translation" readonly></textarea>
+      </div>
+
+      <button id="translate-text" class="primary-btn">Translate</button>
+      <span id="text-status" class="status"></span>
+    </section>
+
+    <section class="history-section">
+      <div class="history-header">
+        <h2>Translation history</h2>
+        <button id="clear-history" class="clear-history-btn">Delete</button>
+      </div>
+
+      <div id="history-empty" class="history-empty">
+        <div class="hourglass">⌛</div>
+        <p>History is empty</p>
+      </div>
+      <div id="history-list" class="history-list"></div>
+    </section>
+
+  </div>
+
+  <script src="app-text.js"></script>
+</body>
+
+</html>
