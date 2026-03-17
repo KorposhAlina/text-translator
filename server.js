@@ -16,22 +16,18 @@ app.use(express.json());
 // ---------------- Статичні файли ----------------
 app.use(express.static(__dirname));
 
-
+// ---------------- Функція очистки перекладу ----------------
 function cleanTranslation(chunks, originalText) {
   let text = chunks.join("").trim();
 
-  // 1️⃣ Прибираємо пробіли перед пунктуацією
   text = text.replace(/\s+([.,!?…])/g, "$1");
 
-  // 2️⃣ Велика літера після . ! ? …
   text = text.replace(/([.!?…])\s*([a-zа-яіїєґ])/giu, (m, p1, p2) => {
     return p1 + " " + p2.toUpperCase();
   });
 
-  // 3️⃣ Велика літера на початку речення
-  text = text.replace(/^[a-zа-яёіїєґ]/iu, m => m.toUpperCase());
+  text = text.replace(/^[a-zа-яіїєґ]/iu, m => m.toUpperCase());
 
-  // 4️⃣ Порівнюємо пунктуацію з оригіналом
   const originalPunctuation = originalText.match(/[.!?…]/g) || [];
   const translatedPunctuation = text.match(/[.!?…]/g) || [];
 
@@ -62,16 +58,13 @@ async function translateText(text, source, target) {
     const res = await fetch(url);
     const data = await res.json();
 
-    // Якщо Google повернув дивну відповідь — просто повертаємо оригінал
     if (!data || !data[0]) {
       translatedParts.push(sentence);
       continue;
     }
 
-    // Google повертає масив фрагментів
     const chunks = data[0].map(item => item[0]);
 
-    // cleanTranslation працює з масивом chunks
     const cleaned = cleanTranslation(chunks, sentence);
 
     translatedParts.push(cleaned);
