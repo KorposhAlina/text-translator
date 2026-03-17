@@ -25,6 +25,10 @@ function cleanTranslation(chunks) {
   // Робимо велику літеру після крапки
   text = text.replace(/\. ([a-zа-яёіїє])/g, (m, p1) => ". " + p1.toUpperCase());
 
+  if (!text.endsWith("?") && /[?]/.test(chunks.join(""))) {
+    text += "?";
+  }
+
   return text;
 }
 
