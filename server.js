@@ -61,21 +61,19 @@ async function translateText(text, source, target) {
     const res = await fetch(url);
     const data = await res.json();
 
-    // Захист від порожніх або дивних відповідей Google
+    // Якщо Google повернув дивну відповідь — просто повертаємо оригінал
     if (!data || !data[0]) {
       translatedParts.push(sentence);
       continue;
     }
 
-    const chunks = data[0].map(item => item[0]).join("").trim();
+    // Google повертає масив фрагментів
+    const chunks = data[0].map(item => item[0]);
 
-    // Витягуємо пунктуацію з оригіналу
-    const punctuation = sentence.match(/[.!?…]$/)?.[0] || "";
+    // cleanTranslation працює з масивом chunks
+    const cleaned = cleanTranslation(chunks, sentence);
 
-    // cleanTranslation працює з chunks
-    const cleaned = cleanTranslation([chunks], sentence);
-
-    translatedParts.push(cleaned + punctuation);
+    translatedParts.push(cleaned);
   }
 
   return translatedParts.join(" ");
