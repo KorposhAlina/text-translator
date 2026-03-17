@@ -16,17 +16,22 @@ app.use(express.json());
 // ---------------- Статичні файли ----------------
 app.use(express.static(__dirname));
 
-function cleanTranslation(chunks) {
+
+function cleanTranslation(chunks, originalText) {
   let text = chunks.join("").trim();
 
   // Прибираємо зайві пробіли перед пунктуацією
   text = text.replace(/\s+([.,!?])/g, "$1");
 
-  // Робимо велику літеру після крапки
+  // Велика літера після крапки
   text = text.replace(/\. ([a-zа-яёіїє])/g, (m, p1) => ". " + p1.toUpperCase());
 
-  if (!text.endsWith("?") && /[?]/.test(chunks.join(""))) {
-    text += "?";
+  // Якщо у вхідному тексті було "?", а в перекладі немає — додаємо
+  const origHasQuestion = originalText.trim().endsWith("?");
+  const translatedHasQuestion = text.trim().endsWith("?");
+
+  if (origHasQuestion && !translatedHasQuestion) {
+    text = text.trim() + "?";
   }
 
   return text;
