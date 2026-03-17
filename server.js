@@ -21,17 +21,21 @@ function cleanTranslation(chunks, originalText) {
   let text = chunks.join("").trim();
 
   // Прибираємо зайві пробіли перед пунктуацією
-  text = text.replace(/\s+([.,!?])/g, "$1");
+  text = text.replace(/\s+([.,!?…])/g, "$1");
 
-  // Велика літера після крапки
-  text = text.replace(/\. ([a-zа-яёіїє])/g, (m, p1) => ". " + p1.toUpperCase());
+  // Велика літера після крапки, знаку оклику, питання, трикрапки
+  text = text.replace(/([.!?…])\s*([a-zа-яёіїє])/gi, (m, p1, p2) => {
+    return p1 + " " + p2.toUpperCase();
+  });
 
-  // Якщо у вхідному тексті було "?", а в перекладі немає — додаємо
-  const origHasQuestion = originalText.trim().endsWith("?");
-  const translatedHasQuestion = text.trim().endsWith("?");
+  // Витягуємо пунктуацію з оригіналу
+  const originalPunctuation = originalText.match(/[.!?…]/g) || [];
+  const translatedPunctuation = text.match(/[.!?…]/g) || [];
 
-  if (origHasQuestion && !translatedHasQuestion) {
-    text = text.trim() + "?";
+  // Якщо в оригіналі більше пунктуації, ніж у перекладі — додаємо
+  if (originalPunctuation.length > translatedPunctuation.length) {
+    const missing = originalPunctuation.slice(translatedPunctuation.length).join("");
+    text = text.trim() + missing;
   }
 
   return text;
