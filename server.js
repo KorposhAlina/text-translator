@@ -34,15 +34,24 @@ function cleanTranslation(chunks) {
 
 // ---------------- GOOGLE TRANSLATE ----------------
 async function translateText(text, source, target) {
-  const url =
-    `https://translate.googleapis.com/translate_a/single?client=gtx` +
-    `&sl=${source}&tl=${target}&dt=t&q=${encodeURIComponent(text)}`;
+  const sentences = splitIntoSentences(text);
 
-  const res = await fetch(url);
-  const data = await res.json();
+  const translatedParts = [];
 
-  const chunks = data[0].map(item => item[0]);
-  return cleanTranslation(chunks);
+  for (const sentence of sentences) {
+    const url =
+      `https://translate.googleapis.com/translate_a/single?client=gtx` +
+      `&sl=${source}&tl=${target}&dt=t&q=${encodeURIComponent(sentence)}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const chunks = data[0].map(item => item[0]).join("").trim();
+
+    translatedParts.push(chunks);
+  }
+
+  return translatedParts.join(" ");
 }
 
 // ---------------- Переклад тексту ----------------
