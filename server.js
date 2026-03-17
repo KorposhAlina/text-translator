@@ -47,11 +47,13 @@ function splitIntoSentences(text) {
 }
 
 async function translateText(text, source, target) {
-  const sentences = splitIntoSentences(text);
+  const parts = splitSentencesWithPunctuation(text);
 
   const translatedParts = [];
 
-  for (const sentence of sentences) {
+  for (const part of parts) {
+    const sentence = part.trim();
+
     const url =
       `https://translate.googleapis.com/translate_a/single?client=gtx` +
       `&sl=${source}&tl=${target}&dt=t&q=${encodeURIComponent(sentence)}`;
@@ -59,9 +61,12 @@ async function translateText(text, source, target) {
     const res = await fetch(url);
     const data = await res.json();
 
-    const chunks = data[0].map(item => item[0]).join("").trim();
+    const translated = data[0].map(item => item[0]).join("").trim();
 
-    translatedParts.push(chunks);
+    // Витягуємо пунктуацію з оригіналу
+    const punctuation = sentence.match(/[.!?…]$/)?.[0] || "";
+
+    translatedParts.push(translated + punctuation);
   }
 
   return translatedParts.join(" ");
