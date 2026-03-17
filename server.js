@@ -16,6 +16,18 @@ app.use(express.json());
 // ---------------- Статичні файли ----------------
 app.use(express.static(__dirname));
 
+function cleanTranslation(chunks) {
+  let text = chunks.join("").trim();
+
+  // Прибираємо зайві пробіли перед пунктуацією
+  text = text.replace(/\s+([.,!?])/g, "$1");
+
+  // Робимо велику літеру після крапки
+  text = text.replace(/\. ([a-zа-яёіїє])/g, (m, p1) => ". " + p1.toUpperCase());
+
+  return text;
+}
+
 // ---------------- GOOGLE TRANSLATE ----------------
 async function translateText(text, source, target) {
   const url =
@@ -25,7 +37,8 @@ async function translateText(text, source, target) {
   const res = await fetch(url);
   const data = await res.json();
 
-  return data[0].map(item => item[0]).join(" ");
+  const chunks = data[0].map(item => item[0]);
+  return cleanTranslation(chunks);
 }
 
 // ---------------- Переклад тексту ----------------
