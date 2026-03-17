@@ -47,7 +47,7 @@ function splitIntoSentences(text) {
 }
 
 async function translateText(text, source, target) {
-  const parts = splitSentencesWithPunctuation(text);
+  const parts = text.match(/([^.!?…]+)([.!?…])?/g) || [];
 
   const translatedParts = [];
 
@@ -61,12 +61,21 @@ async function translateText(text, source, target) {
     const res = await fetch(url);
     const data = await res.json();
 
-    const translated = data[0].map(item => item[0]).join("").trim();
+    // Захист від порожніх або дивних відповідей Google
+    if (!data || !data[0]) {
+      translatedParts.push(sentence);
+      continue;
+    }
+
+    const chunks = data[0].map(item => item[0]).join("").trim();
 
     // Витягуємо пунктуацію з оригіналу
     const punctuation = sentence.match(/[.!?…]$/)?.[0] || "";
 
-    translatedParts.push(translated + punctuation);
+    // cleanTranslation працює з chunks
+    const cleaned = cleanTranslation([chunks], sentence);
+
+    translatedParts.push(cleaned + punctuation);
   }
 
   return translatedParts.join(" ");
