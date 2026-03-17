@@ -33,6 +33,10 @@ function cleanTranslation(chunks) {
 }
 
 // ---------------- GOOGLE TRANSLATE ----------------
+function splitIntoSentences(text) {
+  return text.match(/[^.!?]+[.!?]?/g) || [];
+}
+
 async function translateText(text, source, target) {
   const sentences = splitIntoSentences(text);
 
