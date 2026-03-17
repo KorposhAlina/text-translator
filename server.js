@@ -20,19 +20,21 @@ app.use(express.static(__dirname));
 function cleanTranslation(chunks, originalText) {
   let text = chunks.join("").trim();
 
-  // Прибираємо зайві пробіли перед пунктуацією
+  // 1️⃣ Прибираємо пробіли перед пунктуацією
   text = text.replace(/\s+([.,!?…])/g, "$1");
 
-  // Велика літера після крапки, знаку оклику, питання, трикрапки
-  text = text.replace(/([.!?…])\s*([a-zа-яёіїє])/gi, (m, p1, p2) => {
+  // 2️⃣ Велика літера після . ! ? …
+  text = text.replace(/([.!?…])\s*([a-zа-яёіїєґ])/giu, (m, p1, p2) => {
     return p1 + " " + p2.toUpperCase();
   });
 
-  // Витягуємо пунктуацію з оригіналу
+  // 3️⃣ Велика літера на початку речення
+  text = text.replace(/^[a-zа-яёіїєґ]/iu, m => m.toUpperCase());
+
+  // 4️⃣ Порівнюємо пунктуацію з оригіналом
   const originalPunctuation = originalText.match(/[.!?…]/g) || [];
   const translatedPunctuation = text.match(/[.!?…]/g) || [];
 
-  // Якщо в оригіналі більше пунктуації, ніж у перекладі — додаємо
   if (originalPunctuation.length > translatedPunctuation.length) {
     const missing = originalPunctuation.slice(translatedPunctuation.length).join("");
     text = text.trim() + missing;
@@ -40,7 +42,6 @@ function cleanTranslation(chunks, originalText) {
 
   return text;
 }
-
 // ---------------- GOOGLE TRANSLATE ----------------
 function splitIntoSentences(text) {
   return text.match(/[^.!?]+[.!?]?/g) || [];
