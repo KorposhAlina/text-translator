@@ -24,7 +24,7 @@ function cleanTranslation(chunks, originalText) {
   text = text.replace(/\s+([.,!?…])/g, "$1");
 
   // 2️⃣ Велика літера після . ! ? …
-  text = text.replace(/([.!?…])\s*([a-zа-яёіїєґ])/giu, (m, p1, p2) => {
+  text = text.replace(/([.!?…])\s*([a-zа-яіїєґ])/giu, (m, p1, p2) => {
     return p1 + " " + p2.toUpperCase();
   });
 
